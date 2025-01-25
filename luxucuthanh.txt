@@ -24,9 +24,6 @@ Window:GetFrame().InputBegan:Connect(function(input)
         dragging = true
         dragStart = input.Position
         startPos = Window:GetFrame().Position
-    end
-end)
-
 Window:GetFrame().InputChanged:Connect(function(input)
     if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
         local delta = input.Position - dragStart
@@ -34,9 +31,6 @@ Window:GetFrame().InputChanged:Connect(function(input)
             startPos.X.Scale, startPos.X.Offset + delta.X,
             startPos.Y.Scale, startPos.Y.Offset + delta.Y
         )
-    end
-end)
-
 Window:GetFrame().InputEnded:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = false
