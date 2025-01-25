@@ -14,29 +14,34 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.End
 })
 
--- Di chuyển cửa sổ
-local dragging = false
-local dragStart
-local startPos
+-- Lấy frame chính từ cửa sổ Fluent
+local guiFrame = Window.Instance or Window.Frame or Window:GetMainFrame()
+assert(guiFrame, "Không thể lấy frame của cửa sổ.") -- Báo lỗi nếu frame không tồn tại
 
-Window:GetFrame().InputBegan:Connect(function(input)
+local dragging, dragStart, startPos = false, nil, nil
+
+guiFrame.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = true
-        dragStart = input.Position
-        startPos = Window:GetFrame().Position
-Window:GetFrame().InputChanged:Connect(function(input)
+        dragging, dragStart, startPos = true, input.Position, guiFrame.Position
+    end
+end)
+
+guiFrame.InputChanged:Connect(function(input)
     if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
         local delta = input.Position - dragStart
-        Window:GetFrame().Position = UDim2.new(
+        guiFrame.Position = UDim2.new(
             startPos.X.Scale, startPos.X.Offset + delta.X,
             startPos.Y.Scale, startPos.Y.Offset + delta.Y
         )
-Window:GetFrame().InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging = false
-})
+    end
+end)
+
+guiFrame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+end)
+
 local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    Main = Window:AddTab({ Title = "Trang Chính", Icon = "home" }),
     Setting = Window:AddTab({ Title = "Settings", Icon = "settings" }),
     Player = Window:AddTab({ Title = "PvP", Icon = "baby" }),
     Teleport = Window:AddTab({ Title = "Teleport", Icon = "palmtree" }),
