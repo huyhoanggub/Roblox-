@@ -2,50 +2,21 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
-local UserInputService = game:GetService("UserInputService")
-
 local Window = Fluent:CreateWindow({
     Title = "Hoàng Huy",
     SubTitle = "Version 1",
     TabWidth = 160,
-    Size = UDim2.fromOffset(530, 350),
+    Size = UDim2.fromOffset(400, 300),
     Acrylic = false,
     Theme = "Light",
     MinimizeKey = Enum.KeyCode.End
 })
-
--- Lấy frame chính từ cửa sổ Fluent
-local guiFrame = Window.Instance or Window.Frame or Window:GetMainFrame()
-assert(guiFrame, "Không thể lấy frame của cửa sổ.") -- Báo lỗi nếu frame không tồn tại
-
-local dragging, dragStart, startPos = false, nil, nil
-
-guiFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        dragging, dragStart, startPos = true, input.Position, guiFrame.Position
-    end
-end)
-
-guiFrame.InputChanged:Connect(function(input)
-    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-        local delta = input.Position - dragStart
-        guiFrame.Position = UDim2.new(
-            startPos.X.Scale, startPos.X.Offset + delta.X,
-            startPos.Y.Scale, startPos.Y.Offset + delta.Y
-        )
-    end
-end)
-
-guiFrame.InputEnded:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
-end)
-
 local Tabs = {
     Main = Window:AddTab({ Title = "Trang Chính", Icon = "home" }),
-    Setting = Window:AddTab({ Title = "Settings", Icon = "settings" }),
+    Setting = Window:AddTab({ Title = "Cài Đặt", Icon = "settings" }),
     Player = Window:AddTab({ Title = "PvP", Icon = "baby" }),
-    Teleport = Window:AddTab({ Title = "Teleport", Icon = "palmtree" }),
-    Fruit = Window:AddTab({ Title = "Fruit", Icon = "cherry" }),
+    Teleport = Window:AddTab({ Title = "Dịch Chuyển", Icon = "palmtree" }),
+    Fruit = Window:AddTab({ Title = "Trái", Icon = "cherry" }),
     Raid = Window:AddTab({ Title = "Raid", Icon = "swords" }),
     Race = Window:AddTab({ Title = "Race", Icon = "chevrons-right" }),
     Shop = Window:AddTab({ Title = "Shop", Icon = "shopping-cart" }),
