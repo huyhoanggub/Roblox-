@@ -2,6 +2,8 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+local UserInputService = game:GetService("UserInputService")
+
 local Window = Fluent:CreateWindow({
     Title = "Hoàng Huy",
     SubTitle = "Version 1",
@@ -10,6 +12,34 @@ local Window = Fluent:CreateWindow({
     Acrylic = false,
     Theme = "Light",
     MinimizeKey = Enum.KeyCode.End
+})
+
+-- Di chuyển cửa sổ
+local dragging = false
+local dragStart
+local startPos
+
+Window:GetFrame().InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = Window:GetFrame().Position
+    end
+end)
+
+Window:GetFrame().InputChanged:Connect(function(input)
+    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        Window:GetFrame().Position = UDim2.new(
+            startPos.X.Scale, startPos.X.Offset + delta.X,
+            startPos.Y.Scale, startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+Window:GetFrame().InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
 })
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "home" }),
