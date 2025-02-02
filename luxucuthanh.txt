@@ -4198,7 +4198,7 @@ local SettingFarm = Tabs.Setting:AddSection("Setting")
     Options.ToggleFastAttack:SetValue(true)
 
 spawn(function()
-	while wait(0.8) do
+	while wait(0.15) do
 		pcall(function()
 			if _G.FastAttackFaiFao then
 				repeat wait(0)
